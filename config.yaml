@@ -1,9 +1,9 @@
 #set all parames used for RNA_Artefact
 #set path to redcap file      
-Redcap_info: "/trinity/home/hkhalfaoui/pipeline/rna_artefact/input_files/Multipli-RapportMarieEtHajerU_DATA_LABELS_2022-05-16_1514.csv" 
+Redcap_info: "/trinity/home/prod_user/pipeline/rna_artefact/input_files/Multipli-RapportMarieEtHajerU_DATA_LABELS_2022-05-16_1514.csv" 
 #set path to list genes files
-Genes_list: "/trinity/home/hkhalfaoui/pipeline/rna_artefact/input_files/COSMIC_Census_Panel_cleaner_v82_2021_12_01.tsv"
+Genes_list: "/trinity/home/prod_user/pipeline/rna_artefact/input_files/COSMIC_Census_Panel_cleaner_v82_2021_12_01.tsv"
 #set path to resultats collecting data
-current_dir: "/trinity/home/hkhalfaoui/pipeline/rna_artefact/"
+current_dir: "/trinity/home/prod_user/pipeline/rna_artefact/"
 #set a file to add all detected Artefact
 result_file: "artefact_to_add"
