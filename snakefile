@@ -47,7 +47,7 @@ rule collect_data:
     log:
         "logs/collect_data/{ID_PATIENT}.log"   
     shell:   
-        "bash scripts/collect_data_origin.sh  {input}   {output} &> {log}"
+        "bash scripts/collect_data.sh  {input}   {output} &> {log}"
 #========================================================================collect data from compressed files (gz)====================================================
 rule compresed_data:
     input:
@@ -57,7 +57,7 @@ rule compresed_data:
     log:
         "logs/collect_data/{ID_PATIENT_GZ}.log"
     shell:   
-        "bash scripts/collect_data_origin.sh  {input}  {output} &> {log}" 
+        "bash scripts/collect_data.sh  {input}  {output} &> {log}" 
 #========================================================================Annote RNA_Artefact =========================================================================
 rule Annote_artefact:
     input:
@@ -66,7 +66,7 @@ rule Annote_artefact:
     output:
         config["result_file"]+".tsv"
     log:
-        "logs/collect_data/artefact_to_add.log"
+        "logs/artefact/artefact_to_add.log"
     script:   
         "scripts/RNA_artefact_data.R"  
 #========================================================================================================================================================================
