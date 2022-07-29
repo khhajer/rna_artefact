@@ -6,6 +6,14 @@ library(dplyr)
 library(fs)
 library(tidyverse)
 library(stringr)
+log <- file(snakemake@log[[1]], open="wt")
+sink(log)
+#====================================================================================================================================================================
+#                                                       Remove all slurm-xxx.out from the previous step 
+#================================================================================================================================================================
+dir <- paste(getwd(),"/",sep="")
+delfiles <- dir(path=dir ,pattern="slurm-*")
+file.remove(file.path(dir, delfiles))
 #=================================================================================================================================================================
 #                                                         Redcapfile :patients informations
 #=================================================================================================================================================================
@@ -22,7 +30,7 @@ census_panel=read.delim(snakemake@input[[2]],header = T)
 #====================================================================================================================================================================
 #                                                          Raw_variant : list files
 #====================================================================================================================================================================
-print("STRAT TREATMENT")
+print("START TREATMENT")
 files = dir_ls(paste(getwd(),"/Raw_variant",sep=""))
 df_list = map(files, read_tsv)
 all_RNA_mutations=bind_rows(df_list, .id = 'PATIENT')%>% mutate(PATIENT= str_match(PATIENT,paste(getwd(),"/Raw_variant/(.*)\\.txt",sep=""))[,2],GENE=gsub("'","",GENE))%>%
@@ -30,11 +38,15 @@ filter(MR_DP4_ALT>=10 ,GENE %in% census_panel$GENE)%>%rowwise()%>%mutate(key = p
 all_RNA_mutations=all_RNA_mutations%>%group_by(PATIENT)%>%filter(!duplicated(START)) 
 
 #==================================================================================================================================================================
-#                                                           merge raw_variant files with redcap file informations
+#                                                           merge raw_variant files with Redcap file informations
 #==================================================================================================================================================================
+
 all_RNA_mutations=merged.data <- merge(all_RNA_mutations, Redcap_infoSamples, by="PATIENT")
 Patient_RNA_platform=(all_RNA_mutations%>%group_by(PATIENT)%>%count(arn_platform))
 
+#=================================================================================================================================================================
+#                                                                 calculate the frequency of mutations by platform                                        
+#====================================================================================================================================================================
  nb_Patient_by_Platform = function (platforme_sequecing) {
   nb_samples=0
    for (i in 1:length(Patient_RNA_platform$arn_platform)){
@@ -51,11 +63,12 @@ nb_Patient_NOVASEQ
 frequency_mutation_byPatient=all_RNA_mutations%>%group_by(key)%>%count(arn_platform)%>%mutate(frequency= case_when (arn_platform=="NOVASEQ"
   ~ n/nb_Patient_NOVASEQ,arn_platform=="NEXTSEQ"~n/nb_Patient_NEXTSEQ))
 
-
+#===================================================================================================================================================================
+#                                                                         annote artefact and create the final file : artefact to add 
+#========================================================================================================================================================================
 
 Annot_ARTEFACT=frequency_mutation_byPatient%>%group_by(key)%>%mutate(artefact=case_when(frequency>=0.5  ~ "RNA_ARTEFACT", frequency<0.5 ~ "NO_ARTEFACT_DETECTED"))%>%
   select(key,frequency,artefact)%>%filter(artefact=="RNA_ARTEFACT")
-
 
 select_column=all_RNA_mutations%>%select(CHROM,START,STOP,REF,ALT,key)
 merge_info=merged.data<-merge(Annot_ARTEFACT,select_column,by="key")%>%mutate(ANNOTE="YES")%>%filter(!duplicated(key))%>%arrange(desc(START))
@@ -65,8 +78,8 @@ artefact_to_add=merge_info%>%select(CHROM,START,REF,ALT,ANNOTE,artefact)%>%arran
 
 print("add artefact")
 
-file.create(file.path("/scratch/hkhalfaoui/RNA_artefact/", snakemake@output[[1]]))
-write.table(artefact_to_add, file =  paste("/scratch/hkhalfaoui/RNA_artefact/",snakemake@output[[1]],sep=""), col.names = F,row.names = F, quote = F,sep = "\t",na = "")
+file.create(file.path("/trinity/home/hkhalfaoui/pipeline/rna_artefact/", snakemake@output[[1]]))
+write.table(artefact_to_add, file =  paste("/trinity/home/hkhalfaoui/pipeline/rna_artefact/",snakemake@output[[1]],sep=""), col.names = F,row.names = F, quote = F,sep = "\t",na = "")
 print("END TREATMENT")
 
 #=======================================================================================================================================================================

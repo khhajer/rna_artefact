@@ -6,5 +6,5 @@
 #SBATCH --mail-user=h.khalfaoui@bordeaux.unicancer.fr
 module load conda 
 source activate RNA_Artefact
-srun snakemake -F -s snakefile --configfile=config.yaml --cluster "sbatch  -N 1 -c 14  --mem=1G --cpus-per-task=20" --jobs 20 -c1
+srun snakemake -F  -R collect_data   -s snakefile --configfile=config.yaml --cluster "sbatch  -c 14  --mem=1G --cpus-per-task=20" --jobs 20 -c1
 conda deactivate 

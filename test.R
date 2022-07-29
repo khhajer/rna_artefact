@@ -1,6 +1,0 @@
-paste(getwd(),"/",sep="")
-paste(getwd(),"/resultats",sep="")
-paste(getwd(),"/resultats/(.*)\\.txt",sep="")
-#'/scratch/hkhalfaoui/RNA_artefact/resultats/(.*)\\.txt')
-#dir_ls(paste(dirname(getwd()),"/Raw_variant",sep=""))
-paste(getwd(),"/Raw_variant",sep="")
