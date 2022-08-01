@@ -5,7 +5,7 @@
 #SBATCH --mail-type=END
 #SBATCH --mail-user=h.khalfaoui@bordeaux.unicancer.fr
 module load conda 
-rm -f Raw_variant
+rm -r -f Raw_variant
 source activate RNA_Artefact
 srun snakemake -F  -R collect_data   -s snakefile --configfile=config.yaml --cluster "sbatch  -c 14  --mem=1G --cpus-per-task=20" --jobs 20 -c1
 conda deactivate 
