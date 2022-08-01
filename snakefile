@@ -1,5 +1,4 @@
-#!!!!!!!!! #patinet M01-0001-TJM(j'ai ecrase le fichier il faut voir comment faire)+
-# il y a un autre fichiery
+
 configfile : "config.yaml"
 #Get all subdirectories.
 import pandas as pd
