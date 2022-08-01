@@ -6,4 +6,4 @@ Genes_list: "/trinity/home/prod_user/pipeline/rna_artefact/input_files/COSMIC_Ce
 #set path to resultats collecting data
 current_dir: "/trinity/home/prod_user/pipeline/rna_artefact/"
 #set a file to add all detected Artefact
-result_file: "artefact_to_add"
+result_file: "artefacts_to_add_rna_artefact"

@@ -78,8 +78,8 @@ artefact_to_add=merge_info%>%select(CHROM,START,REF,ALT,ANNOTE,artefact)%>%arran
 
 print("add artefact")
 
-file.create(file.path("/trinity/home/prod_user/pipeline/rna_artefact/", snakemake@output[[1]]))
-write.table(artefact_to_add, file =  paste("/trinity/home/prod_user/pipeline/rna_artefact/",snakemake@output[[1]],sep=""), col.names = F,row.names = F, quote = F,sep = "\t",na = "")
+file.create(file.path("/scratch_ssd/reference/annotation/gvx_history/", snakemake@output[[1]]))
+write.table(artefact_to_add, file =  paste("/scratch_ssd/reference/annotation/gvx_history/",snakemake@output[[1]],sep=""), col.names = F,row.names = F, quote = F,sep = "\t",na = "")
 print("END TREATMENT")
 
 #=======================================================================================================================================================================
