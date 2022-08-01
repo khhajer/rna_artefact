@@ -35,7 +35,7 @@ files = dir_ls(paste(getwd(),"/Raw_variant",sep=""))
 df_list = map(files, read_tsv)
 all_RNA_mutations=bind_rows(df_list, .id = 'PATIENT')%>% mutate(PATIENT= str_match(PATIENT,paste(getwd(),"/Raw_variant/(.*)\\.txt",sep=""))[,2],GENE=gsub("'","",GENE))%>%
 filter(MR_DP4_ALT>=10 ,GENE %in% census_panel$GENE)%>%rowwise()%>%mutate(key = paste(CHROM,as.numeric(START),REF,ALT,sep = ":"), PATIENT=str_sub(PATIENT,1,12))
-all_RNA_mutations=all_RNA_mutations%>%group_by(PATIENT)%>%filter(!duplicated(START)) 
+all_RNA_mutations=all_RNA_mutations%>%group_by(PATIENT)%>%filter(!duplicated(key)) 
 
 #==================================================================================================================================================================
 #                                                           merge raw_variant files with Redcap file informations
