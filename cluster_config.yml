@@ -1,0 +1,11 @@
+# cluster_config.yml - cluster configuration
+__default__:
+  account:
+  partition: lowpri
+  mem: 3G
+  time: 
+  nodes: 1
+  ntasks-per-node: 20 #Request n cores be allocated per node.
+  chdir:
+  output: 
+  error: 

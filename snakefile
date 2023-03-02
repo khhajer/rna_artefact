@@ -1,36 +1,40 @@
 
 configfile : "config.yaml"
-#Get all subdirectories.
+#!/usr/bin/env python
+import requests
 import pandas as pd
+import numpy as np
+from io import StringIO
 from pathlib import Path
 import os 
-dir_list=[]
-p = Path("/scratch/omic_data/projects/MULTIPLI/ANALYSE/")
-df = pd.read_csv(config["Redcap_info"])
-for i in df.index:
-    PATIENT=(df["Patient ID"][i])
-    for it in os.scandir(p):
-        if it.is_dir():
-            if it.name.startswith(PATIENT):
-                dir_list.append(it.path)
-def get_path_sample(extension_file):
-    list_file=[]
-    for path in dir_list:
-        for  root, dirs, files in os.walk(path):
-            for file in files :
-                if file.endswith(extension_file) :
-                    file_path=os.path.join(root,file)
-                    list_file.append(file_path)
-    return(list_file)
-#Return all id patients from compressed files and uncompressed files 
-id_patient_file=[]
-id_patient_gzfile=[]
-for i in range(len(get_path_sample("Union_samples_chrAll.txt"))):
-    id_patient_file.append(get_path_sample("Union_samples_chrAll.txt")[i][45:62])
-for i in range(len(get_path_sample("Union_samples_chrAll.txt.gz"))):
-   id_patient_gzfile.append(get_path_sample("Union_samples_chrAll.txt.gz")[i][45:62])
-print(id_patient_file)
-print(id_patient_gzfile)
+
+data = {
+    'token': 'C68FCD462DAA114203BEC2307631F07D',
+    'content': 'report',
+    'format': 'csv',
+    'report_id': '309',
+    'rawOrLabel': 'raw',
+    'rawOrLabelHeaders': 'raw',
+    'exportCheckboxLabel': 'false',
+    'returnFormat': 'csv'
+}
+r = requests.post('http://129.10.20.120/redcap/api/',data=data)
+print('HTTP Status: ' + str(r.status_code))
+print(r.text)
+df = pd.read_csv(StringIO(r.text))
+columns=["patient_id","redcap_repeat_instrument","redcap_repeat_instance","arn_platform"]
+df=pd.DataFrame(df,columns=columns)
+df_Repport_RNA_Patient=df.rename(columns={"patient_id": "Patient ID", "redcap_repeat_instrument": "Repeat Instrument","redcap_repeat_instance":"Repeat Instance","arn_platform":"Tumor RNA platform"})
+df_Repport_RNA_Patient.to_csv(config["current_dir"]+"input_files/Repport_RNA_Patient.csv",sep=",",index=False)
+
+
+# get wilcards for all patients
+dirnameForUnzipFile, =glob_wildcards("/scratch/omic_data/projects/MULTIPLI/ANALYSE/"+"{DIRNAME}/Raw_variant/Union_samples_chrAll.txt")
+dirnameForzipFile, =glob_wildcards("/scratch/omic_data/projects/MULTIPLI/ANALYSE/"+"{DIRNAME}/Raw_variant/Union_samples_chrAll.txt.gz")
+
+# remove duplicate id patients
+id_patient_file=list(set(dirnameForUnzipFile))
+id_patient_gzfile=list(set(dirnameForzipFile))
 #==================================================================================target rules=====================================================================================
 rule all:
     input: 
@@ -40,7 +44,7 @@ rule all:
 #========================================================================collect data from uncompressed files ========================================================
 rule collect_data:
     input:
-        "/scratch/omic_data/projects/MULTIPLI/ANALYSE/{ID_PATIENT}/Raw_variant/Union_samples_chrAll.txt"  
+        "/scratch/omic_data/projects/MULTIPLI/ANALYSE/{ID_PATIENT}/Raw_variant/Union_samples_chrAll.txt" 
     output:
         config["current_dir"]+"Raw_variant/"+"{ID_PATIENT}.txt" 
     log:
@@ -60,7 +64,7 @@ rule compresed_data:
 #========================================================================Annote RNA_Artefact =========================================================================
 rule Annote_artefact:
     input:
-        config["Redcap_info"],
+        config["current_dir"]+"input_files/Repport_RNA_Patient.csv",
         config["Genes_list"]
     output:
         config["result_file"]+".tsv"
