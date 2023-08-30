@@ -1,7 +1,20 @@
-#set all parames used for RNA_Artefact
-#set path to list genes files
-Genes_list: "/trinity/home/hkhalfaoui/pipeline/rna_artefact/input_files/COSMIC_Census_Panel_cleaner_v82_2021_12_01.tsv"
-#set path to resultats collecting data
+# copy input files from scratch (cluster : K2so) yes or no  ("/scratch/omic_data/projects/")
+option_copy_input_file:
+Project_name: "Rnaseqpatho"
+#path to run analysis:
 current_dir: "/trinity/home/hkhalfaoui/pipeline/rna_artefact/"
-#set a file to add all detected Artefact
-result_file: "artefacts_to_add_rna_artefact"
+#path input variants files
+input_files: ""
+colname_chromosome: "CHROM"
+colname_start_position: "START"
+colname_stop_position: "STOP"
+colname_ref_allele: "REF"
+colname_alt_allele: "ALT"
+colname_depth_ALT_allele: "MR_DP4_ALT"
+threshold_depth_ALT_allele : 0
+colname_gene: "GENE"
+#input gene file list:
+input_genes_list_file: "/trinity/home/hkhalfaoui/pipeline/rna_artefact/input_files/COSMIC_Census_Panel_cleaner_v82_2021_12_01.tsv"
+colname_genes_list_genes: "GENE"
+#occurrence mutation
+threshold_occurrence_mutations: 50
