@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-#set all parames used for RNA_Artefact
-#set path to list genes files
-Genes_list: "/trinity/home/prod_user/pipeline/rna_artefact/input_files/COSMIC_Census_Panel_cleaner_v82_2021_12_01.tsv"
-#set path to resultats collecting data
-current_dir: "/trinity/home/prod_user/pipeline/rna_artefact/"
-#set a file to add all detected Artefact
-result_file: "artefacts_to_add_rna_artefact"
-=======
 # copy input files from scratch (cluster : K2so) yes or no  ("/scratch/omic_data/projects/")
 option_copy_input_file:
 Project_name: "Rnaseqpatho"
