@@ -62,12 +62,14 @@ rule all:
     input: 
         expand(config["current_dir"]+"Raw_variant/"+"{WILDCARDS}.txt",WILDCARDS=wildcards) ,
         expand(config["current_dir"]+"Raw_variant/"+"{WILDCARDS1}.txt" ,WILDCARDS1=wildcards1 ),
-        config["current_dir"]+"artefacts_to_add_rna_artefact.tsv" if config["Project_name"]=="MULTIPLI" else [],# Sur la branche prod il faut changer le current dir pour mettre le fichier dans le bon chemin
-        config["current_dir"]+"rna_artefact_Rnaseqpatho.tsv" if config["Project_name"]=="Rnaseqpatho" else [] ,# sur la branche prod il faut changer le current dir pour mettre le fichier dans le dossier filter artefact
+        #"/scratch_ssd/reference/annotation/gvx_historyartefacts_to_add_rna_artefact.tsv" if config["Project_name"]=="MULTIPLI" else [],# Sur la branche prod il faut changer le current dir pour mettre le fichier dans le bon chemin
+        #"/scratch/omic_data/projects/Rnaseqpatho/rna_artefact_Rnaseqpatho.tsv" if config["Project_name"]=="Rnaseqpatho" else [] ,# sur la branche prod il faut changer le current dir pour mettre le fichier dans le dossier filter artefact
+        config["current_dir"]+"artefacts_to_add_rna_artefact.tsv" if config["Project_name"]=="MULTIPLI" else [],
+        config["current_dir"]+"rna_artefact_Rnaseqpatho.tsv" if config["Project_name"]=="Rnaseqpatho" else [] ,
         config["current_dir"]+"rna_artefact.tsv" if len(config["Project_name"])==0 else [] 
         
 
-# #========================================================================collect data from uncompressed files ========================================================
+# # #========================================================================collect data from uncompressed files ========================================================
 if config["Project_name"]:
     rule collect_data:
         input:
@@ -101,13 +103,13 @@ rule Annote_artefact:
     input:
         input_files=expand(config["current_dir"]+"Raw_variant/{WILDCARDS}.txt",WILDCARDS=wildcards) if len(config["Project_name"])!=0 else [expand(config["input_files"]+"{WILDCARDS}.txt",WILDCARDS=wildcards )],  
         input_file_gz=expand(config["current_dir"]+"Raw_variant/{WILDCARDS1}.txt",WILDCARDS1=wildcards1) if len(config["Project_name"])!=0 else [expand(config["input_files"]+"{WILDCARDS1}.txt",WILDCARDS1=wildcards1)],
-        #input_file=expand(config["input_files"]+"{WILDCARDS}.txt",WILDCARDS=wildcards ) if len(config["Project_name"])==0  else [],  
-        #input_file_gz=expand(config["input_files"]+"{WILDCARDS1}.txt",WILDCARDS1=wildcards1 ) if len(config["Project_name"])==0  else [],
         input_list_gene=config["input_genes_list_file"] if len(config["input_genes_list_file"])!=0 else [] 
         
     output:
-        config["current_dir"]+"artefacts_to_add_rna_artefact.tsv" if config["Project_name"]=="MULTIPLI" else [],# Sur la branche prod il faut changer le current dir pour mettre le fichier dans le bon chemin
-        config["current_dir"]+"rna_artefact_Rnaseqpatho.tsv" if config["Project_name"]=="Rnaseqpatho" else [] ,# sur la branche prod il faut changer le current dir pour mettre le fichier dans le dossier filter artefact
+        #"/scratch_ssd/reference/annotation/gvx_history/artefacts_to_add_rna_artefact.tsv" if config["Project_name"]=="MULTIPLI" else [],
+        #"/scratch/omic_data/projects/Rnaseqpatho/rna_artefact_Rnaseqpatho.tsv" if config["Project_name"]=="Rnaseqpatho" else [] ,
+        config["current_dir"]+"artefacts_to_add_rna_artefact.tsv" if config["Project_name"]=="MULTIPLI" else [],
+        config["current_dir"]+"rna_artefact_Rnaseqpatho.tsv" if config["Project_name"]=="Rnaseqpatho" else [] ,
         config["current_dir"]+"rna_artefact.tsv" if len(config["Project_name"])==0 else [] 
              
     params:
@@ -121,25 +123,11 @@ rule Annote_artefact:
         ref=config["colname_ref_allele"], 
         alt=config["colname_alt_allele"] ,
         gene=config["colname_gene"] ,
-        threshold_depth_ALT_allele=config["threshold_depth_ALT_allele"]
+        threshold_depth_ALT_allele=config["threshold_depth_ALT_allele"],
+        list_artefact_biologists=config["input_list_artefact_biologists"]
     log:
         "logs/artefact/artefact_to_add.log"
     script:   
         "scripts/RNA_artefact_data.R"  
 
-# #======================================================================== Annote RNA_Artefact For Rnaseqpatho Project =========================================================================
-
-# elif config["project"]=="Rnaseqpatho":
-#     rule Annote_artefact:
-#         input:
-#             config["current_dir"]+"Raw_variant"
-#         output:
-#             config["current_dir"]+"Artefact/RNA_Artefact_patho.tsv"
-#         params:
-#             Project_name=config["project"]  
-#         log:
-#             "logs/artefact/artefact_to_add.log"
-#         script:   
-#             "scripts/RNA_artefact_data.R"  
-
-# #========================================================================================================================================================================
+#=================================================================================================================================================
