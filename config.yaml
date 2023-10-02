@@ -1,4 +1,3 @@
-#set all parames used for RNA_Artefact
 # copy input files from scratch (cluster : K2so) yes or no  ("/scratch/omic_data/projects/")
 Project_name: "Rnaseqpatho"
 #path to run analysis:
