@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# copy input files from scratch (cluster : K2so) yes or no  ("/scratch/omic_data/projects/")
-=======
->>>>>>> a0c51c70504dabe7d72c0ec36a4739a5f66c0e62
 Project_name: "Rnaseqpatho"
 #path to run analysis:
 current_dir: "/trinity/home/prod_user/pipeline/rna_artefact/"
