@@ -27,15 +27,15 @@ then
     snakemake -s snakefile --unlock
     snakemake --cleanup-metadata snakefile
     source activate RNA_Artefact
-    snakemake -F  -s snakefile  --configfile "/trinity/home/hkhalfaoui/pipeline/rna_artefact/config.yaml"  --cluster-config cluster_config.yml  --cluster "sbatch  --nodes {cluster.nodes} --ntasks {cluster.ntasks} --cpus-per-task {cluster.cpus-per-task} "  --jobs 200 --dry-run #This is useful to test if the workflow is defined properly and to estimate the amount of needed computation.
-    #snakemake -F  -s snakefile  --configfile "/trinity/home/hkhalfaoui/pipeline/rna_artefact/config.yaml" --cluster-config cluster_config.yml  --cluster "sbatch  --nodes {cluster.nodes} --ntasks {cluster.ntasks} --cpus-per-task {cluster.cpus-per-task} "  --notemp --jobs 200
+    snakemake -F  -s snakefile  --configfile "config.yaml"  --cluster-config cluster_config.yml  --cluster "sbatch  --nodes {cluster.nodes} --ntasks {cluster.ntasks} --cpus-per-task {cluster.cpus-per-task} "  --jobs 200 --dry-run #This is useful to test if the workflow is defined properly and to estimate the amount of needed computation.
+    #snakemake -F  -s snakefile  --configfile "config.yaml" --cluster-config cluster_config.yml  --cluster "sbatch  --nodes {cluster.nodes} --ntasks {cluster.ntasks} --cpus-per-task {cluster.cpus-per-task} "  --notemp --jobs 200
 else
     echo -e "${terminalColorMessage}Launch RNA artefact analysis${terminalColorMessage}"
     conda activate RNA_Artefact
     snakemake -s snakefile --unlock
     snakemake --cleanup-metadata snakefile
-    snakemake -F  -s snakefile -c1 --dry-run # This is useful to test if the workflow is defined properly and to estimate the amount of needed computation.
-    #snakemake -F  -s snakefile -c1 
+    snakemake -F  -s snakefile --configfile "config.yaml" -c1 --dry-run # This is useful to test if the workflow is defined properly and to estimate the amount of needed computation.
+    #snakemake -F  -s snakefile --configfile "config.yaml" -c1 
 
 fi
 
