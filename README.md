@@ -145,6 +145,3 @@ Exemple de fichier : [exemple_list_artefcats_biologistes](input_files/list_artef
     Si le pipeline échoue, vérifiez les journaux dans le dossier ./log pour comprendre l'origine du problème.
     Assurez-vous que les chemins vers les fichiers et les paramètres dans le fichier de configuration sont corrects.
 
-
-
->>>>>>> Slurm_development
