@@ -1,9 +1,8 @@
-# copy input files from scratch (cluster : K2so) yes or no  ("/scratch/omic_data/projects/")
 Project_name: "Rnaseqpatho"
 #path to run analysis:
 current_dir: "/trinity/home/hkhalfaoui/pipeline/rna_artefact/"
 #path input variants files
-input_files: ""
+input_files: "/trinity/home/hkhalfaoui/pipeline/rna_artefact/Raw_variant"
 colname_chromosome: "CHROM"
 colname_start_position: "START"
 colname_stop_position: "STOP"
