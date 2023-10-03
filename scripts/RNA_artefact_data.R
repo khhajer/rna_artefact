@@ -147,6 +147,10 @@ print("add list artefact biologists if exist")
 if (Project_name=="MULTIPLI" && threshold_occurrence_mutations!=0){
   if(file.exists(list_artefact_biologists)){
   data_artefacts_biologists=read_delim(list_artefact_biologists,sep="\t")
+<<<<<<< HEAD
+=======
+
+>>>>>>> Slurm_development
   data_artefacts_biologists=data_artefacts_biologists%>%select(CHROM,START,REF,ALT)%>%mutate(artefact="RNA_ARTEFACT_list",annote="YES")
   result_list_artefact=rbind(data_artefacts_biologists,all_RNA_mutations)
 
@@ -156,7 +160,12 @@ if (Project_name=="MULTIPLI" && threshold_occurrence_mutations!=0){
 
 }else{
   if(file.exists(list_artefact_biologists=snakemake@params[["list_artefact_biologists"]] )){
+<<<<<<< HEAD
   data_artefacts_biologists=read_delim(snakemake@params[["list_artefact_biologists"]],sep="\t")
+=======
+  data_artefacts_biologists=read_delim(snakemake@params[["list_artefact_biologists"]])
+  print(data_artefacts_biologists)
+>>>>>>> Slurm_development
   data_artefacts_biologists=data_artefacts_biologists%>%mutate(key=paste(CHROM,START,STOP,REF,ALT,sep=":"),freq_of_mutations=100,artefact="RNA_ARTEFACT_list")%>%select(key,freq_of_mutations,artefact)
   result_list_RNA_artefact=rbind(data_artefacts_biologists,all_RNA_mutations)
 
