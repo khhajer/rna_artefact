@@ -36,6 +36,7 @@ Exemple de fichier [exemple_fichier_variants.txt!](exemples/exemple_fichier_vari
             * PROFONDEUR D'ALLELE ALERNATIF (colonne optionnel) : 1   
 ### ***Ficher de liste de gènes*** 
 Exemple de fichier : [exemple_list_gene.txt!](exemples/exemple_list_gene.txt)
+<<<<<<< HEAD
 
     -Ficher de liste de gènes :
         Un fichier qui contient au moins une colonne contenant les noms des gènes
@@ -44,6 +45,21 @@ Exemple de fichier : [exemple_list_gene.txt!](exemples/exemple_list_gene.txt)
     -Un fichier qui contient différents paramètres à remplir par l'utilisateur avant de faire tourner le pipeline.
     Paramètres pour gérer les fichiers de variants sur K2so :
         *Project_name (optionnel): vous êtes sur K2so et les fichiers de variants sont stockés sur /scratch/omic_data/projects/ il faut sur indiquer le nom du project (commme MULTIPLI ou Rnaseqpatho) sinon vous laissez vide.
+=======
+Ficher de list de genes :
+        Un fichier qui contient une liste de genes avec les noms de génes qui vous intéressent avec au moins une colonne de nom de gene
+
+### ***Ficher liste des artefats fournis les biologistes*** 
+Exemple de fichier : [exemple_list_artefcats_biologistes](input_files/list_artefacts_rna_biologists.txt)
+    -Ficher de list de genes :
+        Un fichier qui contient une liste des artefacts fournis par les biologistes .
+        Si la liste existe on la merge avec les résultats finaux des artefcats détecter par calcule de fréquence en tagant  des avec les noms de génes RNA_ARTEFACT_list .
+### ***Ficher de configuration*** 
+    
+    - Config.yaml est un fichier qui conteint diffrents paramétres à remplir par l'utilisateur avant de faire tourner le pipeline.
+    Paramétres pour gérer les fichiers de variants sur K2so :
+        *Project_name (optionnel): vous etes sur K2so et les fichiers de variants sont stockées sur /scratch/omic_data/projects/ il faut sur indiquer le nom de project (commme MULTIPLI ou Rnaseqpatho) sinon vous laissez vide.
+>>>>>>> Slurm_development
         #path to run analysis:
         current_dir (obligatoire): indiquer le chemin du dossier qui contient le script
         #path input variants files
@@ -60,10 +76,19 @@ Exemple de fichier : [exemple_list_gene.txt!](exemples/exemple_list_gene.txt)
         input_genes_list_file (optionnel): indiquer le chemin pour la liste des gènes sinon vous pouvez laisser vide (exemples: /exemple_list_gene.txt).
         colname_genes_list_genes(optionnel) : indiquer le nom de colonne des gènes de la liste des gènes (exemple :GENE) sinon vous laissez vide . 
         #occurrence mutation
+<<<<<<< HEAD
         threshold_occurrence_mutations(obligatoire): indiquer le seuil à appliquer pour les occurences des mutations considérées comme artefactuelles (exemple: 50)
 ### ***Lancer l'analyse***
     1. Remplir le fichier config.yaml avec les paramètres en question.
     2. Lancer le pipeline via le script Launch_RNA_Artefact.sh (bash  Launch_RNA_Artefact.sh )
+=======
+        threshold_occurrence_mutations(obligatoire): indiquer le seui à appliquer pour les occurance des mutation considérées comme artefactuals (exemple: 50)
+        #list Artefact biologists
+        input_list_artefact_biologists(optionnel): si une list d'artefacts est fourni par les biologistes elle seras automatiquement ajouter au résultat final en tagant "RNA_ARTEFACT_list"
+### ***Lancer l'analyse***
+    1. Remplir de fichier config.yaml avec les parmétres en question.
+    2. Lancer le pipeline via le script Launch_RNA_Artefact.sh (bash  Launch_RNA_Artefact.sh -R (yes/no))
+>>>>>>> Slurm_development
 
 ### ***Gestion des Erreurs***
     Si le pipeline échoue, vérifiez les logs dans le dossier ./log pour comprendre l'origine du problème.
