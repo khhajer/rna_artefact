@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 <div align="center">
 <h1>** Documentation du Pipeline Bioinformatique Rnaseq Artefact **</h1>
 </div>
