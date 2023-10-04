@@ -144,24 +144,28 @@ if(threshold_occurrence_mutations!=0){
 #=================================================================================================================================
 
 print("add list artefact biologists if exist")
-if (Project_name=="MULTIPLI" && threshold_occurrence_mutations!=0){
-  if(file.exists(list_artefact_biologists)){
-  data_artefacts_biologists=read_delim(list_artefact_biologists)
+if (Project_name=="MULTIPLI" ){
+  print("add list artefacts biologists for MULTIPLI project")
+  if(file.exists(snakemake@params[["list_artefacts_biologists"]])){
+  data_artefacts_biologists=read_delim(snakemake@params[["list_artefacts_biologists"]])
   data_artefacts_biologists=data_artefacts_biologists%>%select(CHROM,START,REF,ALT)%>%mutate(artefact="RNA_ARTEFACT_list",annote="YES")
   result_list_artefact=rbind(data_artefacts_biologists,all_RNA_mutations)
 
   }else{
+    print("there is no list artefacts biologists to add for MULTIPLI project")
     result_list_artefact=all_RNA_mutations
   }
 
 }else{
-  if(file.exists(list_artefact_biologists=snakemake@params[["list_artefact_biologists"]] )){
-  data_artefacts_biologists=read_delim(snakemake@params[["list_artefact_biologists"]])
+  if(file.exists(snakemake@params[["list_artefacts_biologists"]] )){
+  print("add list artefacts biologists")
+  data_artefacts_biologists=read_delim(snakemake@params[["list_artefacts_biologists"]])
   print(data_artefacts_biologists)
   data_artefacts_biologists=data_artefacts_biologists%>%mutate(key=paste(CHROM,START,STOP,REF,ALT,sep=":"),freq_of_mutations=100,artefact="RNA_ARTEFACT_list")%>%select(key,freq_of_mutations,artefact)
   result_list_RNA_artefact=rbind(data_artefacts_biologists,all_RNA_mutations)
 
   }else{
+    print("there is no list artefacts biologists to add !!")
     result_list_RNA_artefact=all_RNA_mutations
   }
 

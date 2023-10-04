@@ -24,11 +24,11 @@ if [ "$run_on_slurm" == "yes" ] ;
 then 
     echo -e  "${terminalColorMessage}Launch RNA artefact analysis on SLURM${terminalColorMessage} "
     module load conda 
+    source activate RNA_Artefact
     snakemake -s snakefile --unlock
     snakemake --cleanup-metadata snakefile
-    source activate RNA_Artefact
-    snakemake -F  -s snakefile  --configfile "config.yaml"  --cluster-config cluster_config.yml  --cluster "sbatch  --nodes {cluster.nodes} --ntasks {cluster.ntasks} --cpus-per-task {cluster.cpus-per-task} "  --jobs 200 --dry-run #This is useful to test if the workflow is defined properly and to estimate the amount of needed computation.
-    #snakemake -F  -s snakefile  --configfile "config.yaml" --cluster-config cluster_config.yml  --cluster "sbatch  --nodes {cluster.nodes} --ntasks {cluster.ntasks} --cpus-per-task {cluster.cpus-per-task} "  --notemp --jobs 200
+    #snakemake -F  -s snakefile  --configfile "config.yaml"  --cluster-config cluster_config.yml  --cluster "sbatch  --nodes {cluster.nodes} --ntasks {cluster.ntasks} --cpus-per-task {cluster.cpus-per-task} "  --jobs 200 --dry-run #This is useful to test if the workflow is defined properly and to estimate the amount of needed computation.
+    snakemake -F  -s snakefile  --configfile "config.yaml" --cluster-config cluster_config.yml  --cluster "sbatch  --nodes {cluster.nodes} --ntasks {cluster.ntasks} --cpus-per-task {cluster.cpus-per-task} "  --notemp --jobs 200
 else
     echo -e "${terminalColorMessage}Launch RNA artefact analysis${terminalColorMessage}"
     conda activate RNA_Artefact
