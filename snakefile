@@ -60,42 +60,42 @@ else:
 #==================================================================================target rules=====================================================================================
 rule all:
     input: 
-        #expand(config["current_dir"]+"Raw_variant/"+"{WILDCARDS}.txt",WILDCARDS=wildcards) ,
-        #expand(config["current_dir"]+"Raw_variant/"+"{WILDCARDS1}.txt" ,WILDCARDS1=wildcards1 ),
-        "/scratch_ssd/reference/annotation/gvx_history/artefacts_to_add_rna_artefact.tsv" if config["Project_name"]=="MULTIPLI" else [],# Sur la branche prod il faut changer le current dir pour mettre le fichier dans le bon chemin
-        "/scratch/omic_data/projects/Rnaseqpatho/rna_artefact_Rnaseqpatho.tsv" if config["Project_name"]=="Rnaseqpatho" else [] ,# sur la branche prod il faut changer le current dir pour mettre le fichier dans le dossier filter artefact
-        #config["current_dir"]+"artefacts_to_add_rna_artefact.tsv" if config["Project_name"]=="MULTIPLI" else [],
-        #config["current_dir"]+"rna_artefact_Rnaseqpatho.tsv" if config["Project_name"]=="Rnaseqpatho" else [] ,
+        expand(config["current_dir"]+"Raw_variant/"+"{WILDCARDS}.txt",WILDCARDS=wildcards) ,
+        expand(config["current_dir"]+"Raw_variant/"+"{WILDCARDS1}.txt" ,WILDCARDS1=wildcards1 ),
+        "/scratch_ssd/reference/annotation/gvx_history/artefacts_to_add_rna_artefact.tsv" if config["Project_name"]=="MULTIPLI" else [],
+        "/scratch/omic_data/projects/Rnaseqpatho/rna_artefact_Rnaseqpatho.tsv" if config["Project_name"]=="Rnaseqpatho" else [] ,
+        #config["current_dir"]+"artefacts_to_add_rna_artefact.tsv" if config["Project_name"]=="MULTIPLI" else [], #file result in branch dev
+        #config["current_dir"]+"rna_artefact_Rnaseqpatho.tsv" if config["Project_name"]=="Rnaseqpatho" else [] , #file result in branch dev
         config["current_dir"]+"rna_artefact.tsv" if len(config["Project_name"])==0 else [] 
         
 
 # # #========================================================================collect data from uncompressed files ========================================================
-# if config["Project_name"]:
-#     rule collect_data:
-#         input:
-#             "/scratch/omic_data/projects/"+str(config["Project_name"])+"/ANALYSE/"+"{WILDCARDS}/Raw_variant/Union_samples_chrAll.txt" 
-#         output:
-#             config["current_dir"]+"Raw_variant/"+"{WILDCARDS}.txt" 
-#         params:
-#             Project_name=config["Project_name"]    
-#         log:
-#             "logs/collect_data/{WILDCARDS}.log"   
-#         shell:   
-#             "bash scripts/collect_data.sh  {input}   {output} {params.Project_name} &>{log}"
+if config["Project_name"]:
+    rule collect_data:
+        input:
+            "/scratch/omic_data/projects/"+str(config["Project_name"])+"/ANALYSE/"+"{WILDCARDS}/Raw_variant/Union_samples_chrAll.txt" 
+        output:
+            config["current_dir"]+"Raw_variant/"+"{WILDCARDS}.txt" 
+        params:
+            Project_name=config["Project_name"]    
+        log:
+            "logs/collect_data/{WILDCARDS}.log"   
+        shell:   
+            "bash scripts/collect_data.sh  {input}   {output} {params.Project_name} &>{log}"
 
-# # #======================================================================== collect data from compressed files (gz) ====================================================
-# if config["Project_name"] == "MULTIPLI" :
-#     rule compresed_data:
-#         input:
-#             "/scratch/omic_data/projects/"+str(config["Project_name"])+"/ANALYSE/"+"{WILDCARDS1}/Raw_variant/Union_samples_chrAll.txt.gz" 
-#         output:
-#             config["current_dir"]+"Raw_variant/"+"{WILDCARDS1}.txt"
-#         params:
-#             Project_name=config["Project_name"] 
-#         log:
-#             "logs/collect_data/{WILDCARDS1}.log"
-#         shell:   
-#             "bash scripts/collect_data.sh  {input}  {output} {params.Project_name} &> {log}" 
+# #======================================================================== collect data from compressed files (gz) ====================================================
+if config["Project_name"] == "MULTIPLI" :
+    rule compresed_data:
+        input:
+            "/scratch/omic_data/projects/"+str(config["Project_name"])+"/ANALYSE/"+"{WILDCARDS1}/Raw_variant/Union_samples_chrAll.txt.gz" 
+        output:
+            config["current_dir"]+"Raw_variant/"+"{WILDCARDS1}.txt"
+        params:
+            Project_name=config["Project_name"] 
+        log:
+            "logs/collect_data/{WILDCARDS1}.log"
+        shell:   
+            "bash scripts/collect_data.sh  {input}  {output} {params.Project_name} &> {log}" 
 
 # #======================================================================== Annote RNA_Artefact For MULTIPLI Project =========================================================================
 
